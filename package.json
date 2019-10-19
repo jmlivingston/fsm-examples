@@ -6,6 +6,7 @@
     "@xstate/react": "0.7.1",
     "@xstate/test": "0.1.0",
     "bootswatch": "4.3.1",
+    "prop-types": "15.7.2",
     "react": "16.10.2",
     "react-dom": "16.10.2",
     "react-scripts": "3.2.0",
@@ -13,14 +14,17 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:storybook": "start-storybook -p 9009 -s public",
+    "start:storybook": "start-storybook -p 9009 -s public -c scripts/storybook",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "import/first": "off"
+    }
   },
   "browserslist": {
     "production": [
