@@ -1,10 +1,10 @@
 import { useMachine } from '@xstate/react'
 import React from 'react'
-import { toggleMachine, TOGGLE_EVENTS, TOGGLE_STATES } from './toggleMachine'
+import { Machine } from 'xstate'
+import { TOGGLE_EVENTS, TOGGLE_MACHINE, TOGGLE_STATES } from './Toggle.machine'
 
 function Toggle() {
-  const [current, send] = useMachine(toggleMachine)
-
+  const [current, send] = useMachine(Machine(TOGGLE_MACHINE))
   return (
     <button
       onClick={() => send(TOGGLE_EVENTS.TOGGLE)}

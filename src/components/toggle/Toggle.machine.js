@@ -1,5 +1,3 @@
-import { Machine } from 'xstate'
-
 const TOGGLE_EVENTS = Object.freeze({
   TOGGLE: 'TOGGLE'
 })
@@ -9,8 +7,8 @@ const TOGGLE_STATES = Object.freeze({
   INACTIVE: 'INACTIVE'
 })
 
-const toggleMachine = Machine({
-  id: 'toggle',
+const TOGGLE_MACHINE = Object.freeze({
+  id: TOGGLE_EVENTS.TOGGLE,
   initial: TOGGLE_STATES.INACTIVE,
   states: {
     [TOGGLE_STATES.INACTIVE]: { on: { [TOGGLE_EVENTS.TOGGLE]: TOGGLE_STATES.ACTIVE } },
@@ -18,4 +16,4 @@ const toggleMachine = Machine({
   }
 })
 
-export { toggleMachine, TOGGLE_EVENTS, TOGGLE_STATES }
+export { TOGGLE_MACHINE, TOGGLE_EVENTS, TOGGLE_STATES }

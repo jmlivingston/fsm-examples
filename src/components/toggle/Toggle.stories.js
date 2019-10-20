@@ -6,4 +6,9 @@ export default {
   title: 'Components'
 }
 
-export const toggle = () => <Toggle />
+export const toggle = () => (
+  <>
+    <p>Click to toggle</p>
+    <Toggle />
+  </>
+)
