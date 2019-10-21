@@ -11,12 +11,9 @@ const createTodo = title => ({
   completed: false
 })
 
-const TODOS_EVENTS = Object.freeze({
-  TODOS: 'todos'
-})
-
 const TODOS_STATES = Object.freeze({
   CLEAR_COMPLETED: 'CLEAR_COMPLETED',
+  INITIALIZING: 'initializing',
   MARK_ACTIVE: 'MARK.active',
   MARK_COMPLETED: 'MARK.completed',
   NEWTODO_CHANGE: 'NEWTODO.CHANGE',
@@ -29,14 +26,14 @@ const TODOS_STATES = Object.freeze({
 })
 
 const TODOS_MACHINE = Object.freeze({
-  id: TODOS_EVENTS.TODOS,
+  id: 'todos',
   context: {
     todo: '',
     todos: []
   },
-  initial: 'initializing',
+  initial: TODOS_STATES.INITIALIZING,
   states: {
-    initializing: {
+    [TODOS_STATES.INITIALIZING]: {
       entry: assign({
         todos: (ctx, e) =>
           ctx.todos.map(todo => ({

@@ -2,10 +2,6 @@ import { actions, Machine, sendParent } from 'xstate'
 import { TODOS_STATES } from './Todos.machine'
 const { assign } = actions
 
-const TODO_EVENTS = Object.freeze({
-  TODO: 'todo'
-})
-
 const TODO_STATES = Object.freeze({
   BLUR: 'BLUR',
   CANCEL: 'CANCEL',
@@ -25,7 +21,7 @@ const TODO_STATES = Object.freeze({
 })
 
 const TODO_MACHINE = Object.freeze({
-  id: TODO_EVENTS.TODO,
+  id: 'todo',
   initial: TODO_STATES.READING,
   context: {
     id: undefined,
@@ -128,4 +124,4 @@ const TODO_MACHINE = Object.freeze({
 
 const todoMachine = Machine(TODO_MACHINE)
 
-export { TODO_EVENTS, todoMachine, TODO_STATES }
+export { todoMachine, TODO_STATES }

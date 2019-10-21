@@ -40,7 +40,6 @@ function Todos() {
   const numActiveTodos = state.context.todos.filter(todo => !todo.completed).length
   const allCompleted = state.context.todos.length > 0 && numActiveTodos === 0
   const mark = !allCompleted ? 'completed' : 'active'
-  const markEvent = `MARK.${mark}`
   const filteredTodos = filterTodos(state, state.context.todos)
 
   return (
@@ -86,11 +85,11 @@ function Todos() {
           </ul>
           <div className="form-check">
             <input
-              id="toggle-all"
-              className="form-check-input"
-              type="checkbox"
               checked={allCompleted}
-              onChange={() => send(markEvent)}
+              className="form-check-input"
+              id="toggle-all"
+              onChange={() => send(`MARK.${mark}`)}
+              type="checkbox"
             />
             <label htmlFor="toggle-all" title={`Mark all as ${mark}`} className="form-check-label">
               Mark all as {mark}

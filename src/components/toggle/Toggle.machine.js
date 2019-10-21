@@ -8,7 +8,7 @@ const TOGGLE_STATES = Object.freeze({
 })
 
 const TOGGLE_MACHINE = Object.freeze({
-  id: TOGGLE_EVENTS.TOGGLE,
+  id: 'toggle',
   initial: TOGGLE_STATES.INACTIVE,
   states: {
     [TOGGLE_STATES.INACTIVE]: { on: { [TOGGLE_EVENTS.TOGGLE]: TOGGLE_STATES.ACTIVE } },

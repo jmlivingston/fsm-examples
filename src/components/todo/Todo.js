@@ -20,9 +20,9 @@ function Todo({ todoRef }) {
         <input
           className="form-control"
           onBlur={() => send(TODO_STATES.BLUR)}
-          onChange={e => send(TODO_STATES.CHANGE, { value: e.target.value })}
-          onKeyDown={e => e.key === 'Escape' && send(TODO_STATES.CANCEL)}
-          onKeyPress={e => e.key === 'Enter' && send(TODO_STATES.COMMIT)}
+          onChange={({ target: { value } }) => send(TODO_STATES.CHANGE, { value })}
+          onKeyDown={({ key }) => key === 'Escape' && send(TODO_STATES.CANCEL)}
+          onKeyPress={({ key }) => key === 'Enter' && send(TODO_STATES.COMMIT)}
           ref={inputRef}
           value={state.context.title}
         />
