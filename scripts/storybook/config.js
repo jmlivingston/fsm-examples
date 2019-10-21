@@ -1,6 +1,7 @@
 import { addParameters, configure } from '@storybook/react'
 import { themes } from '@storybook/theming'
 import 'bootswatch/dist/darkly/bootstrap.min.css'
+import '../../src/index.css'
 
 addParameters({
   options: {
