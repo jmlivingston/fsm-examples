@@ -1,14 +1,15 @@
 import uuid from 'uuid/v4'
 import { assign, spawn } from 'xstate'
-import { todoMachine } from './Todo.machine'
+import { todoMachine, TODO_STATES } from './Todo.machine'
+
+// TODO: Why can't I just get the object and pass this way
+// const todoMachine = Machine(TODO_MACHINE())
 
 const createTodo = title => ({
   id: uuid(),
   title: title,
   completed: false
 })
-
-// const todoMachine = Machine(TODO_MACHINE)
 
 const TODOS_EVENTS = Object.freeze({
   TODOS: 'todos'
@@ -30,7 +31,7 @@ const TODOS_STATES = Object.freeze({
 const TODOS_MACHINE = Object.freeze({
   id: TODOS_EVENTS.TODOS,
   context: {
-    todo: '', // new todo
+    todo: '',
     todos: []
   },
   initial: 'initializing',
@@ -96,14 +97,10 @@ const TODOS_MACHINE = Object.freeze({
     [TODOS_STATES.SHOW_ACTIVE]: '.active',
     [TODOS_STATES.SHOW_COMPLETED]: '.completed',
     [TODOS_STATES.MARK_COMPLETED]: {
-      actions: ctx => {
-        ctx.todos.forEach(todo => todo.ref.send('SET_COMPLETED'))
-      }
+      actions: ctx => ctx.todos.forEach(todo => todo.ref.send(TODO_STATES.SET_COMPLETED))
     },
     [TODOS_STATES.MARK_ACTIVE]: {
-      actions: ctx => {
-        ctx.todos.forEach(todo => todo.ref.send('SET_ACTIVE'))
-      }
+      actions: ctx => ctx.todos.forEach(todo => todo.ref.send(TODO_STATES.SET_ACTIVE))
     },
     CLEAR_COMPLETED: {
       actions: assign({

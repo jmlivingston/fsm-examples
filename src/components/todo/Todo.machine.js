@@ -11,16 +11,20 @@ const TODO_STATES = Object.freeze({
   CANCEL: 'CANCEL',
   CHANGE: 'CHANGE',
   COMMIT: 'COMMIT',
+  COMPLETED: 'completed',
   DELETE: 'DELETE',
   DELETED: 'deleted',
   EDIT: 'EDIT',
   EDITING: 'editing',
+  PENDING: 'pending',
   READING: 'reading',
+  SET_ACTIVE: 'SET_ACTIVE',
+  SET_COMPLETED: 'SET_COMPLETED',
   TOGGLE_COMPLETE: 'TOGGLE_COMPLETE',
   UNKNOWN: 'unknown'
 })
 
-const todoMachine = Machine({
+const TODO_MACHINE = Object.freeze({
   id: TODO_EVENTS.TODO,
   initial: TODO_STATES.READING,
   context: {
@@ -36,7 +40,7 @@ const todoMachine = Machine({
         sendParent(ctx => ({ type: TODOS_STATES.TODO_COMMIT, todo: ctx }))
       ]
     },
-    [TODO_STATES.DELETE]: [TODO_STATES.DELETED]
+    [TODO_STATES.DELETE]: TODO_STATES.DELETED
   },
   states: {
     [TODO_STATES.DELETED]: {
@@ -73,13 +77,16 @@ const todoMachine = Machine({
       states: {
         [TODO_STATES.UNKNOWN]: {
           on: {
-            '': [{ target: 'completed', cond: ctx => ctx.completed }, { target: 'pending' }]
+            '': [
+              { target: TODO_STATES.COMPLETED, cond: ctx => ctx.completed },
+              { target: TODO_STATES.PENDING }
+            ]
           }
         },
-        pending: {
+        [TODO_STATES.PENDING]: {
           on: {
             SET_COMPLETED: {
-              target: 'completed',
+              target: TODO_STATES.COMPLETED,
               actions: [
                 assign({ completed: true }),
                 sendParent(ctx => ({ type: TODOS_STATES.TODO_COMMIT, todo: ctx }))
@@ -87,17 +94,17 @@ const todoMachine = Machine({
             }
           }
         },
-        completed: {
+        [TODO_STATES.COMPLETED]: {
           on: {
             TOGGLE_COMPLETE: {
-              target: 'pending',
+              target: TODO_STATES.PENDING,
               actions: [
                 assign({ completed: false }),
                 sendParent(ctx => ({ type: TODOS_STATES.TODO_COMMIT, todo: ctx }))
               ]
             },
             SET_ACTIVE: {
-              target: 'pending',
+              target: TODO_STATES.PENDING,
               actions: [
                 assign({ completed: false }),
                 sendParent(ctx => ({ type: TODOS_STATES.TODO_COMMIT, todo: ctx }))
@@ -110,13 +117,15 @@ const todoMachine = Machine({
         }
       },
       on: {
-        EDIT: {
-          target: 'editing',
+        [TODO_STATES.EDIT]: {
+          target: TODO_STATES.EDITING,
           actions: 'focusInput'
         }
       }
     }
   }
 })
+
+const todoMachine = Machine(TODO_MACHINE)
 
 export { TODO_EVENTS, todoMachine, TODO_STATES }
