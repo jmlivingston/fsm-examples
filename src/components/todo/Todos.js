@@ -2,7 +2,7 @@ import { useMachine } from '@xstate/react'
 import React from 'react'
 import { Machine } from 'xstate'
 import Todo from './Todo'
-import { TODOS_MACHINE, TODOS_STATES } from './Todos.machine'
+import { TODOS_EVENTS, TODOS_MACHINE } from './Todos.machine'
 
 const todosMachine = Machine(TODOS_MACHINE)
 
@@ -51,9 +51,9 @@ function Todos() {
           placeholder="What needs to be done?"
           autoFocus
           onKeyPress={e =>
-            e.key === 'Enter' && send(TODOS_STATES.NEWTODO_COMMIT, { value: e.target.value })
+            e.key === 'Enter' && send(TODOS_EVENTS.NEWTODO_COMMIT, { value: e.target.value })
           }
-          onChange={e => send(TODOS_STATES.NEWTODO_CHANGE, { value: e.target.value })}
+          onChange={e => send(TODOS_EVENTS.NEWTODO_CHANGE, { value: e.target.value })}
           value={state.context.todo}
         />
       </header>
@@ -64,21 +64,21 @@ function Todos() {
             <li className="nav-item">
               <a
                 className={`nav-link ${state.matches('all') ? 'active' : 'cursor-pointer'}`}
-                onClick={() => send(TODOS_STATES.SHOW_ALL)}>
+                onClick={() => send(TODOS_EVENTS.SHOW_ALL)}>
                 All
               </a>
             </li>
             <li className="nav-item">
               <a
                 className={`nav-link ${state.matches('active') ? 'active' : 'cursor-pointer'}`}
-                onClick={() => send(TODOS_STATES.SHOW_ACTIVE)}>
+                onClick={() => send(TODOS_EVENTS.SHOW_ACTIVE)}>
                 Active
               </a>
             </li>
             <li className="nav-item">
               <a
                 className={`nav-link ${state.matches('completed') ? 'active' : 'cursor-pointer'}`}
-                onClick={() => send(TODOS_STATES.SHOW_COMPLETED)}>
+                onClick={() => send(TODOS_EVENTS.SHOW_COMPLETED)}>
                 Complete
               </a>
             </li>
@@ -109,7 +109,7 @@ function Todos() {
             {numActiveTodos < state.context.todos.length && (
               <button
                 className="btn btn-success mt-3"
-                onClick={() => send(TODOS_STATES.CLEAR_COMPLETED)}>
+                onClick={() => send(TODOS_EVENTS.CLEAR_COMPLETED)}>
                 Clear Completed
               </button>
             )}

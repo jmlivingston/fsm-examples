@@ -1,22 +1,28 @@
 import { actions, Machine, sendParent } from 'xstate'
-import { TODOS_STATES } from './Todos.machine'
+import { TODOS_EVENTS } from './Todos.machine'
 const { assign } = actions
 
-const TODO_STATES = Object.freeze({
+const TODO_EVENTS = Object.freeze({
   BLUR: 'BLUR',
   CANCEL: 'CANCEL',
   CHANGE: 'CHANGE',
   COMMIT: 'COMMIT',
-  COMPLETED: 'completed',
   DELETE: 'DELETE',
-  DELETED: 'deleted',
   EDIT: 'EDIT',
-  EDITING: 'editing',
-  PENDING: 'pending',
-  READING: 'reading',
   SET_ACTIVE: 'SET_ACTIVE',
   SET_COMPLETED: 'SET_COMPLETED',
-  TOGGLE_COMPLETE: 'TOGGLE_COMPLETE',
+  TOGGLE_COMPLETE: 'TOGGLE_COMPLETE'
+})
+
+const TODO_STATES = Object.freeze({
+  COMPLETED: 'completed',
+  DELETED: 'deleted',
+  EDITING: 'editing',
+  HISTORY: 'hist',
+  PENDING: 'pending',
+  READING: 'reading',
+  READING_COMPLETED: 'reading.completed',
+  READING_HISTORY: 'reading.hist',
   UNKNOWN: 'unknown'
 })
 
@@ -29,40 +35,40 @@ const TODO_MACHINE = Object.freeze({
     prevTitle: ''
   },
   on: {
-    [TODO_STATES.TOGGLE_COMPLETE]: {
-      target: '.reading.completed',
+    [TODO_EVENTS.TOGGLE_COMPLETE]: {
+      target: `.${TODO_STATES.READING_COMPLETED}`,
       actions: [
         assign({ completed: true }),
-        sendParent(ctx => ({ type: TODOS_STATES.TODO_COMMIT, todo: ctx }))
+        sendParent(ctx => ({ type: TODOS_EVENTS.TODO_COMMIT, todo: ctx }))
       ]
     },
-    [TODO_STATES.DELETE]: TODO_STATES.DELETED
+    [TODO_EVENTS.DELETE]: TODO_STATES.DELETED
   },
   states: {
     [TODO_STATES.DELETED]: {
-      onEntry: sendParent(ctx => ({ type: TODOS_STATES.TODO_DELETE, id: ctx.id }))
+      onEntry: sendParent(ctx => ({ type: TODOS_EVENTS.TODO_DELETE, id: ctx.id }))
     },
     [TODO_STATES.EDITING]: {
       onEntry: assign({ prevTitle: ctx => ctx.title }),
       on: {
-        CHANGE: {
+        [TODO_EVENTS.CHANGE]: {
           actions: assign({
             title: (ctx, e) => e.value
           })
         },
-        COMMIT: [
+        [TODO_EVENTS.COMMIT]: [
           {
-            target: 'reading.hist',
-            actions: sendParent(ctx => ({ type: TODOS_STATES.TODO_COMMIT, todo: ctx })),
+            target: TODO_STATES.READING_HISTORY,
+            actions: sendParent(ctx => ({ type: TODOS_EVENTS.TODO_COMMIT, todo: ctx })),
             cond: ctx => ctx.title.trim().length > 0
           },
           { target: TODO_STATES.DELETED }
         ],
-        BLUR: {
+        [TODO_EVENTS.BLUR]: {
           target: TODO_STATES.READING,
-          actions: sendParent(ctx => ({ type: TODOS_STATES.TODO_COMMIT, todo: ctx }))
+          actions: sendParent(ctx => ({ type: TODOS_EVENTS.TODO_COMMIT, todo: ctx }))
         },
-        CANCEL: {
+        [TODO_EVENTS.CANCEL]: {
           target: TODO_STATES.READING,
           actions: assign({ title: ctx => ctx.prevTitle })
         }
@@ -85,35 +91,35 @@ const TODO_MACHINE = Object.freeze({
               target: TODO_STATES.COMPLETED,
               actions: [
                 assign({ completed: true }),
-                sendParent(ctx => ({ type: TODOS_STATES.TODO_COMMIT, todo: ctx }))
+                sendParent(ctx => ({ type: TODOS_EVENTS.TODO_COMMIT, todo: ctx }))
               ]
             }
           }
         },
         [TODO_STATES.COMPLETED]: {
           on: {
-            TOGGLE_COMPLETE: {
+            [TODO_EVENTS.TOGGLE_COMPLETE]: {
               target: TODO_STATES.PENDING,
               actions: [
                 assign({ completed: false }),
-                sendParent(ctx => ({ type: TODOS_STATES.TODO_COMMIT, todo: ctx }))
+                sendParent(ctx => ({ type: TODOS_EVENTS.TODO_COMMIT, todo: ctx }))
               ]
             },
-            SET_ACTIVE: {
+            [TODO_EVENTS.SET_ACTIVE]: {
               target: TODO_STATES.PENDING,
               actions: [
                 assign({ completed: false }),
-                sendParent(ctx => ({ type: TODOS_STATES.TODO_COMMIT, todo: ctx }))
+                sendParent(ctx => ({ type: TODOS_EVENTS.TODO_COMMIT, todo: ctx }))
               ]
             }
           }
         },
-        hist: {
+        [TODO_STATES.HISTORY]: {
           type: 'history'
         }
       },
       on: {
-        [TODO_STATES.EDIT]: {
+        [TODO_EVENTS.EDIT]: {
           target: TODO_STATES.EDITING,
           actions: 'focusInput'
         }
@@ -122,6 +128,8 @@ const TODO_MACHINE = Object.freeze({
   }
 })
 
+// TODO: Why can't I export TODO_MACHINE like Toggle.machine.js
+// I'd like to do that so I can inject testing like Toggle.test.js
 const todoMachine = Machine(TODO_MACHINE)
 
-export { todoMachine, TODO_STATES }
+export { todoMachine, TODO_EVENTS, TODO_STATES }

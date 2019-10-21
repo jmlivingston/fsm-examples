@@ -3,8 +3,8 @@ const TOGGLE_EVENTS = Object.freeze({
 })
 
 const TOGGLE_STATES = Object.freeze({
-  ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE'
+  ACTIVE: 'active',
+  INACTIVE: 'inactive'
 })
 
 const TOGGLE_MACHINE = Object.freeze({

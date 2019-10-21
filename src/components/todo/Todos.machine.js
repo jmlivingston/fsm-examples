@@ -1,9 +1,6 @@
 import uuid from 'uuid/v4'
 import { assign, spawn } from 'xstate'
-import { todoMachine, TODO_STATES } from './Todo.machine'
-
-// TODO: Why can't I just get the object and pass this way
-// const todoMachine = Machine(TODO_MACHINE())
+import { todoMachine, TODO_EVENTS } from './Todo.machine'
 
 const createTodo = title => ({
   id: uuid(),
@@ -11,9 +8,8 @@ const createTodo = title => ({
   completed: false
 })
 
-const TODOS_STATES = Object.freeze({
+const TODOS_EVENTS = Object.freeze({
   CLEAR_COMPLETED: 'CLEAR_COMPLETED',
-  INITIALIZING: 'initializing',
   MARK_ACTIVE: 'MARK.active',
   MARK_COMPLETED: 'MARK.completed',
   NEWTODO_CHANGE: 'NEWTODO.CHANGE',
@@ -23,6 +19,13 @@ const TODOS_STATES = Object.freeze({
   SHOW_COMPLETED: 'SHOW.completed',
   TODO_COMMIT: 'TODO.COMMIT',
   TODO_DELETE: 'TODO.DELETE'
+})
+
+const TODOS_STATES = Object.freeze({
+  ACTIVE_VISIBLE: 'active',
+  ALL_VISIBLE: 'all',
+  COMPLETED_VISIBLE: 'completed',
+  INITIALIZING: 'initializing'
 })
 
 const TODOS_MACHINE = Object.freeze({
@@ -42,20 +45,20 @@ const TODOS_MACHINE = Object.freeze({
           }))
       }),
       on: {
-        '': 'all'
+        '': TODOS_STATES.ALL_VISIBLE
       }
     },
-    all: {},
-    active: {},
-    completed: {}
+    [TODOS_STATES.ALL_VISIBLE]: {},
+    [TODOS_STATES.ACTIVE_VISIBLE]: {},
+    [TODOS_STATES.COMPLETED_VISIBLE]: {}
   },
   on: {
-    [TODOS_STATES.NEWTODO_CHANGE]: {
+    [TODOS_EVENTS.NEWTODO_CHANGE]: {
       actions: assign({
         todo: (ctx, e) => e.value
       })
     },
-    [TODOS_STATES.NEWTODO_COMMIT]: {
+    [TODOS_EVENTS.NEWTODO_COMMIT]: {
       actions: [
         assign({
           todo: '',
@@ -71,7 +74,7 @@ const TODOS_MACHINE = Object.freeze({
       ],
       cond: (ctx, e) => e.value.trim().length
     },
-    [TODOS_STATES.TODO_COMMIT]: {
+    [TODOS_EVENTS.TODO_COMMIT]: {
       actions: [
         assign({
           todos: (ctx, e) =>
@@ -82,7 +85,7 @@ const TODOS_MACHINE = Object.freeze({
         'persist'
       ]
     },
-    [TODOS_STATES.TODO_DELETE]: {
+    [TODOS_EVENTS.TODO_DELETE]: {
       actions: [
         assign({
           todos: (ctx, e) => ctx.todos.filter(todo => todo.id !== e.id)
@@ -90,16 +93,16 @@ const TODOS_MACHINE = Object.freeze({
         'persist'
       ]
     },
-    [TODOS_STATES.SHOW_ALL]: '.all',
-    [TODOS_STATES.SHOW_ACTIVE]: '.active',
-    [TODOS_STATES.SHOW_COMPLETED]: '.completed',
-    [TODOS_STATES.MARK_COMPLETED]: {
-      actions: ctx => ctx.todos.forEach(todo => todo.ref.send(TODO_STATES.SET_COMPLETED))
+    [TODOS_EVENTS.SHOW_ALL]: `.${TODOS_STATES.ALL_VISIBLE}`,
+    [TODOS_EVENTS.SHOW_ACTIVE]: `.${TODOS_STATES.ACTIVE_VISIBLE}`,
+    [TODOS_EVENTS.SHOW_COMPLETED]: `.${TODOS_STATES.COMPLETED_VISIBLE}`,
+    [TODOS_EVENTS.MARK_COMPLETED]: {
+      actions: ctx => ctx.todos.forEach(todo => todo.ref.send(TODO_EVENTS.SET_COMPLETED))
     },
-    [TODOS_STATES.MARK_ACTIVE]: {
-      actions: ctx => ctx.todos.forEach(todo => todo.ref.send(TODO_STATES.SET_ACTIVE))
+    [TODOS_EVENTS.MARK_ACTIVE]: {
+      actions: ctx => ctx.todos.forEach(todo => todo.ref.send(TODO_EVENTS.SET_ACTIVE))
     },
-    CLEAR_COMPLETED: {
+    [TODOS_EVENTS.CLEAR_COMPLETED]: {
       actions: assign({
         todos: ctx => ctx.todos.filter(todo => !todo.completed)
       })
@@ -107,4 +110,4 @@ const TODOS_MACHINE = Object.freeze({
   }
 })
 
-export { TODOS_MACHINE, TODOS_STATES }
+export { TODOS_EVENTS, TODOS_MACHINE, TODOS_STATES }
