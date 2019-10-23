@@ -1,31 +1,13 @@
 import uuid from 'uuid/v4'
 import { assign, spawn } from 'xstate'
-import { todoMachine, TODO_EVENTS } from './Todo.machine'
+import { TODO_EVENTS } from '../../../constants/TODO'
+import { TODOS_EVENTS, TODOS_STATES } from '../../../constants/TODOS'
+import todoMachine from './Todo.machine'
 
 const createTodo = title => ({
   id: uuid(),
   title: title,
   completed: false
-})
-
-const TODOS_EVENTS = Object.freeze({
-  CLEAR_COMPLETED: 'CLEAR_COMPLETED',
-  MARK_ACTIVE: 'MARK.active',
-  MARK_COMPLETED: 'MARK.completed',
-  NEWTODO_CHANGE: 'NEWTODO.CHANGE',
-  NEWTODO_COMMIT: 'NEWTODO.COMMIT',
-  SHOW_ACTIVE: 'SHOW.active',
-  SHOW_ALL: 'SHOW.all',
-  SHOW_COMPLETED: 'SHOW.completed',
-  TODO_COMMIT: 'TODO.COMMIT',
-  TODO_DELETE: 'TODO.DELETE'
-})
-
-const TODOS_STATES = Object.freeze({
-  ACTIVE_VISIBLE: 'active',
-  ALL_VISIBLE: 'all',
-  COMPLETED_VISIBLE: 'completed',
-  INITIALIZING: 'initializing'
 })
 
 const TODOS_MACHINE = Object.freeze({
@@ -110,4 +92,4 @@ const TODOS_MACHINE = Object.freeze({
   }
 })
 
-export { TODOS_EVENTS, TODOS_MACHINE, TODOS_STATES }
+export default TODOS_MACHINE

@@ -3,7 +3,7 @@ import React from 'react'
 import Toggle from './Toggle'
 
 export default {
-  title: 'Components | XState | Toggle'
+  title: 'Components | Robot3 | Toggle'
 }
 
 export const toggle = () => (

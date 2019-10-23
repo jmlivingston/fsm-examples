@@ -1,8 +1,9 @@
 import { useMachine } from '@xstate/react'
 import React from 'react'
 import { Machine } from 'xstate'
+import { TODOS_EVENTS } from '../../../constants/TODO'
 import Todo from './Todo'
-import { TODOS_EVENTS, TODOS_MACHINE } from './Todos.machine'
+import TODOS_MACHINE from './Todos.machine'
 
 const todosMachine = Machine(TODOS_MACHINE)
 

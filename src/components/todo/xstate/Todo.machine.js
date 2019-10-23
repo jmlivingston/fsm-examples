@@ -1,30 +1,8 @@
 import { actions, Machine, sendParent } from 'xstate'
-import { TODOS_EVENTS } from './Todos.machine'
+import { TODO_EVENTS, TODO_STATES } from '../../../constants/TODO'
+import { TODOS_EVENTS } from '../../../constants/TODOS'
+
 const { assign } = actions
-
-const TODO_EVENTS = Object.freeze({
-  BLUR: 'BLUR',
-  CANCEL: 'CANCEL',
-  CHANGE: 'CHANGE',
-  COMMIT: 'COMMIT',
-  DELETE: 'DELETE',
-  EDIT: 'EDIT',
-  SET_ACTIVE: 'SET_ACTIVE',
-  SET_COMPLETED: 'SET_COMPLETED',
-  TOGGLE_COMPLETE: 'TOGGLE_COMPLETE'
-})
-
-const TODO_STATES = Object.freeze({
-  COMPLETED: 'completed',
-  DELETED: 'deleted',
-  EDITING: 'editing',
-  HISTORY: 'hist',
-  PENDING: 'pending',
-  READING: 'reading',
-  READING_COMPLETED: 'reading.completed',
-  READING_HISTORY: 'reading.hist',
-  UNKNOWN: 'unknown'
-})
 
 const TODO_MACHINE = Object.freeze({
   id: 'todo',
@@ -132,4 +110,4 @@ const TODO_MACHINE = Object.freeze({
 // I'd like to do that so I can inject testing like Toggle.test.js
 const todoMachine = Machine(TODO_MACHINE)
 
-export { todoMachine, TODO_EVENTS, TODO_STATES }
+export default todoMachine

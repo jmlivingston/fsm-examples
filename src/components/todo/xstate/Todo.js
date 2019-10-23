@@ -1,6 +1,6 @@
 import { useService } from '@xstate/react'
 import React, { useEffect, useRef } from 'react'
-import { TODO_EVENTS, TODO_STATES } from './Todo.machine'
+import { TODO_EVENTS, TODO_STATES } from '../../../constants/TODO'
 
 function Todo({ todoRef }) {
   const [state, send] = useService(todoRef)

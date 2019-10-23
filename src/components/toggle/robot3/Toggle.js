@@ -1,16 +1,16 @@
-import { useMachine } from '@xstate/react'
 import React from 'react'
-import { Machine } from 'xstate'
+import { useMachine } from 'react-robot'
 import { TOGGLE_EVENTS, TOGGLE_STATES } from '../../../constants/TOGGLE'
 import TOGGLE_MACHINE from './Toggle.machine'
 
 function Toggle() {
-  const [current, send] = useMachine(Machine(TOGGLE_MACHINE))
+  const [current, send] = useMachine(TOGGLE_MACHINE)
+
   return (
     <button
       onClick={() => send(TOGGLE_EVENTS.TOGGLE)}
-      className={`btn btn-${current.value === TOGGLE_STATES.INACTIVE ? 'info' : 'primary'}`}>
-      {current.value}
+      className={`btn btn-${current.name === TOGGLE_STATES.INACTIVE ? 'info' : 'primary'}`}>
+      {current.name}
     </button>
   )
 }

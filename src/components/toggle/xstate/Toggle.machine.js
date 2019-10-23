@@ -1,11 +1,4 @@
-const TOGGLE_EVENTS = Object.freeze({
-  TOGGLE: 'TOGGLE'
-})
-
-const TOGGLE_STATES = Object.freeze({
-  ACTIVE: 'active',
-  INACTIVE: 'inactive'
-})
+import { TOGGLE_EVENTS, TOGGLE_STATES } from '../../../constants/TOGGLE'
 
 const TOGGLE_MACHINE = Object.freeze({
   id: 'toggle',
@@ -16,4 +9,4 @@ const TOGGLE_MACHINE = Object.freeze({
   }
 })
 
-export { TOGGLE_MACHINE, TOGGLE_EVENTS, TOGGLE_STATES }
+export default TOGGLE_MACHINE

@@ -2,9 +2,10 @@ import { fireEvent, render } from '@testing-library/react'
 import { createModel } from '@xstate/test'
 import React from 'react'
 import { Machine } from 'xstate'
+import { TOGGLE_STATES } from '../../../constants/TOGGLE'
 import { combineMachineStates } from '../../../scripts/test/utility'
 import Toggle from './Toggle'
-import { TOGGLE_MACHINE, TOGGLE_STATES } from './Toggle.machine'
+import TOGGLE_MACHINE from './Toggle.machine'
 
 const combinedMachine = combineMachineStates({
   machine: TOGGLE_MACHINE,

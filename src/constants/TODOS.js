@@ -1,0 +1,21 @@
+const TODOS_EVENTS = Object.freeze({
+  CLEAR_COMPLETED: 'CLEAR_COMPLETED',
+  MARK_ACTIVE: 'MARK.active',
+  MARK_COMPLETED: 'MARK.completed',
+  NEWTODO_CHANGE: 'NEWTODO.CHANGE',
+  NEWTODO_COMMIT: 'NEWTODO.COMMIT',
+  SHOW_ACTIVE: 'SHOW.active',
+  SHOW_ALL: 'SHOW.all',
+  SHOW_COMPLETED: 'SHOW.completed',
+  TODO_COMMIT: 'TODO.COMMIT',
+  TODO_DELETE: 'TODO.DELETE'
+})
+
+const TODOS_STATES = Object.freeze({
+  ACTIVE_VISIBLE: 'active',
+  ALL_VISIBLE: 'all',
+  COMPLETED_VISIBLE: 'completed',
+  INITIALIZING: 'initializing'
+})
+
+export { TODOS_EVENTS, TODOS_STATES }

@@ -3,10 +3,10 @@ import React from 'react'
 import Todos from './Todos'
 
 export default {
-  title: 'Components | Todo'
+  title: 'Components | XState | Todo'
 }
 
-export const xStateTodo = () => (
+export const todo = () => (
   <div className="container-fluid">
     <Todos />
   </div>
