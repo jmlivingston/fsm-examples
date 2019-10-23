@@ -6,7 +6,7 @@ export default {
   title: 'Components | Todo'
 }
 
-export const todo = () => (
+export const xStateTodo = () => (
   <div className="container-fluid">
     <Todos />
   </div>

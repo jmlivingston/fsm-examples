@@ -6,7 +6,7 @@ export default {
   title: 'Components | Toggle'
 }
 
-export const toggle = () => (
+export const xStateToggle = () => (
   <>
     <p>Click to toggle</p>
     <Toggle />
