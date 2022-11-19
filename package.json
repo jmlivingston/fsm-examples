@@ -10,7 +10,7 @@
     "react": "16.10.2",
     "react-dom": "16.10.2",
     "react-robot": "0.2.1",
-    "react-scripts": "3.2.0",
+    "react-scripts": "5.0.1",
     "robot3": "0.2.9",
     "uuid": "3.3.3",
     "xstate": "4.6.7"
@@ -46,7 +46,7 @@
     "@storybook/addon-links": "5.2.4",
     "@storybook/addon-storysource": "5.2.4",
     "@storybook/addons": "5.2.4",
-    "@storybook/react": "5.2.4",
+    "@storybook/react": "6.5.13",
     "@storybook/theming": "5.2.4",
     "@testing-library/react": "9.3.0"
   }
